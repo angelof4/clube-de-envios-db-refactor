@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             UsersTableSeeder::class,
             TransportadoraToCarrierSeeder::class,
             ServicoSeeder::class,
+            VtexShippingRatesSeeder::class,
         ]);
     }
 }
