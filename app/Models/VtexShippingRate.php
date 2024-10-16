@@ -22,5 +22,17 @@ class VtexShippingRate extends Model
         'created_at',
         'updated_at'
     ];
+
+    // Define o relacionamento com a model ShippingMethod
+    public function shippingMethod()
+    {
+        return $this->belongsTo(ShippingMethod::class, 'shipping_method_id', 'id');
+    }
+
+    // Define o relacionamento com UserShippingQuote, se necessário
+    public function userShippingQuotes()
+    {
+        return $this->hasMany(UserShippingQuote::class, 'quote_id', 'id');
+    }
 }
 
