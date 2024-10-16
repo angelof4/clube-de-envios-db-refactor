@@ -9,27 +9,87 @@ A refatoração será realizada para garantir que o banco de dados tenha:
 - Chaves primárias definidas em todas as tabelas.
 - Relacionamentos apropriados utilizando chaves estrangeiras.
 - Integridade e consistência dos dados, evitando problemas como duplicação ou perda de referências.
+- A migraçao dos dados do banco Legado para o Novo Banco de dados
 
+---
+# Refatoração de Tabelas
 
-## Funcionalidades
+## 1. Tabela `serviços` -> `shipping_methods`
 
-As principais atividades deste projeto incluem:
+- **Antigo Nome**: `serviços`
+- **Novo Nome**: `shipping_methods`
+- **Significado**: O novo nome reflete mais precisamente a função da tabela, que é armazenar diferentes métodos de envio disponíveis, como PAC e SEDEX.
 
-1. **Análise da Estrutura Atual**: Avaliar o banco de dados existente, identificando as tabelas e colunas que precisam ser refatoradas, bem como os relacionamentos entre elas.
-   
-2. **Definição e Correção de Chaves Estrangeiras**: Revisar e corrigir as chaves estrangeiras para garantir que os relacionamentos entre tabelas estejam corretamente implementados, promovendo a integridade referencial.
+### Relacionamentos:
+- **Relacionamento**: Um método de envio (`shipping_methods`) pode estar associado a várias transportadoras (`carriers`).
+- **Chave Estrangeira**: `shipping_method_id` em `vtex_shipping_rates`, que referencia `id` em `shipping_methods`.
 
-3. **Renomeação de Tabelas e Colunas**: Aplicar as melhores práticas de desenvolvimento, renomeando tabelas e colunas para nomes mais claros e consistentes com as convenções de nomenclatura modernas, melhorando a legibilidade e a manutenção do banco de dados.
+---
 
-4. **Implementação de Chaves Primárias**: Garantir que todas as tabelas possuam chaves primárias adequadas, proporcionando uma identificação única e robusta para cada registro.
+## 2. Tabela `transportadoras` -> `carriers`
 
-5. **Migração de Dados**: Desenvolver scripts de migração que transferem os dados do banco de dados atual para a nova estrutura, garantindo que todos os dados sejam migrados corretamente, sem perdas ou inconsistências.
+- **Antigo Nome**: `transportadoras`
+- **Novo Nome**: `carriers`
+- **Significado**: O termo "carriers" é o termo em inglês utilizado para designar transportadoras. Esse nome é mais alinhado ao vocabulário comum em sistemas de logística e transporte.
 
-6. **Testes e Validação**: Realizar testes rigorosos para garantir que todas as mudanças e migrações de dados estejam funcionando corretamente, preservando a integridade do sistema e a qualidade dos dados.
+### Relacionamentos:
+- **Relacionamento**: Cada transportadora (`carriers`) pode ter vários métodos de envio (`shipping_methods`), dependendo de como ela opera.
+- **Chave Estrangeira**: `carriers_id` em `shipping_methods` que referencia `id` em `carriers`.
 
-7. **Migrações Laravel**: Utilizar migrações do Laravel para automatizar a criação da nova estrutura de banco de dados e aplicar as refatorações de forma segura e controlada.
+---
 
-8. **Documentação das Mudanças**: Manter uma documentação clara das mudanças feitas, incluindo as renomeações de tabelas e colunas, assim como os novos relacionamentos, facilitando futuras manutenções e desenvolvimento.
+## 3. Tabela `cotacao` -> `user_shipping_quotes`
+
+- **Antigo Nome**: `cotacao`
+- **Novo Nome**: `user_shipping_quotes`
+- **Significado**: O novo nome indica que a tabela é responsável por armazenar as cotações de frete feitas pelos usuários. O uso do prefixo "user" deixa claro que essas cotações são específicas para cada usuário.
+
+### Relacionamentos:
+- **Relacionamento**: Uma cotação de frete (`user_shipping_quotes`) é específica para um usuário e pode estar associada a um método de envio (`shipping_methods`).
+- **Chave Estrangeira**: `shipping_method_id` em `user_shipping_quotes`, que referencia `id` em `shipping_methods`.
+
+---
+
+## 4. Tabela `vtex_valores` -> `vtex_shipping_rates`
+
+- **Antigo Nome**: `vtex_valores`
+- **Novo Nome**: `vtex_shipping_rates`
+- **Significado**: Esta tabela é a sucessora da tabela `vtex_valores` e armazena as taxas de envio específicas para a integração com a VTEX. O novo nome descreve mais claramente que a tabela contém as taxas de envio, incluindo detalhes como prazo de entrega e valores associados a diferentes métodos de envio.
+
+### Relacionamentos:
+- **Relacionamento**: As taxas de envio (`vtex_shipping_rates`) estão relacionadas a um método de envio específico (`shipping_methods`).
+- **Chave Estrangeira**: `shipping_method_id` em `vtex_shipping_rates`, que referencia `id` em `shipping_methods`.
+
+---
+
+## 5. Tabela `access_token` -> `access_tokens`
+
+- **Antigo Nome**: `access_token`
+- **Novo Nome**: `access_tokens`
+- **Significado**: O novo nome no plural segue a convenção de nomenclatura que indica que a tabela armazena múltiplos tokens de acesso. Isso é mais claro e consistente, refletindo que a tabela pode conter vários registros.
+
+### Relacionamentos:
+- **Relacionamento**: Cada token de acesso (`access_tokens`) pode estar relacionado a um usuário específico (`users`).
+- **Chave Estrangeira**: `id_usuario` em `access_tokens`, que referencia `id` em `users`.
+
+---
+
+## 6. Tabela `usuarios` -> `users`
+
+- **Antigo Nome**: `usuarios`
+- **Novo Nome**: `users`
+- **Significado**: A tabela de usuários foi renomeada para `users`, um termo em inglês amplamente reconhecido. Esse nome padroniza a nomenclatura com outras tabelas e facilita a compreensão em um contexto de desenvolvimento internacional.
+
+### Relacionamentos:
+- **Relacionamento**: Cada usuário (`users`) pode ter múltiplos tokens de acesso (`access_tokens`).
+- **Chave Estrangeira**: `id_usuario` em `access_tokens`, que referencia `id` em `users`.
+
+---
+
+### Considerações Finais
+
+Essas refatorações foram feitas para melhorar a clareza e a legibilidade do código, tornando mais fácil para desenvolvedores e colaboradores entenderem a estrutura do banco de dados. A adoção de nomes em inglês e a adoção de convenções de nomenclatura consistentes também ajudam a padronizar o projeto e facilitar futuras manutenções. A definição clara dos relacionamentos entre as tabelas também possibilita um entendimento mais profundo das interações no sistema.
+
 
 ## Estrutura do Projeto
 
