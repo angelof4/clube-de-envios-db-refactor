@@ -16,6 +16,6 @@ class Transportadora extends Model
 
     public $timestamps = false;
 
-    protected $connection = 'old_base'; // Nome da conexão definida para o banco legado
+    protected $connection = 'old_mysql'; // Use o nome da sua conexão no .env
 
 }
