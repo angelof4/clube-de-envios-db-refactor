@@ -15,7 +15,8 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             UsersTableSeeder::class,
-            // Outras seeders que você pode ter
+            TransportadoraToCarrierSeeder::class,
+            ServicoSeeder::class,
         ]);
     }
 }

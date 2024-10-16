@@ -18,7 +18,7 @@ class TransportadoraToCarrierSeeder extends Seeder
 
         foreach ($legacyTransportadoras as $legacyTransportadora) {
             Carrier::create([
-                'name' => $legacyTransportadora->nm_transportadora, // Migra o campo 'nome' para o novo campo 'name'
+                'name' => $legacyTransportadora->nm_transportadora,
             ]);
         }
     }

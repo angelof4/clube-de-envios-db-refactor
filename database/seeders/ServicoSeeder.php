@@ -20,6 +20,7 @@ class ServicoSeeder extends Seeder
         foreach ($servicos as $servico) {
             ShippingMethod::create([
                 'method_name' => $servico->nm_servico,
+                'carriers_id' => $servico->id_transportadora,
             ]);
         }
     }
