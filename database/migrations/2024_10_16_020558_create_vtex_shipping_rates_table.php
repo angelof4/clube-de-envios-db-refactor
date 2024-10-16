@@ -8,9 +8,9 @@ class CreateVtexShippingRatesTable extends Migration
 {
     public function up()
     {
-        Schema::connection('new_base')->create('vtex_shipping_rates', function (Blueprint $table) {
+        Schema::create('vtex_shipping_rates', function (Blueprint $table) {
             $table->id(); // id
-            $table->foreignId('service_id')->constrained('services')->onDelete('cascade'); // id_serviço
+            $table->foreignId('shipping_method_id')->constrained('shipping_methods')->onDelete('cascade'); // id_serviço
             $table->integer('delivery_time'); // prazo_entrega
             $table->decimal('initial_weight', 8, 2); // peso_inicial
             $table->decimal('final_weight', 8, 2); // peso_final
@@ -23,6 +23,6 @@ class CreateVtexShippingRatesTable extends Migration
 
     public function down()
     {
-        Schema::connection('new_base')->dropIfExists('vtex_shipping_rates');
+        Schema::dropIfExists('vtex_shipping_rates');
     }
 }
